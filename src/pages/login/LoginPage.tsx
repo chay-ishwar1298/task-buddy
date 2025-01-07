@@ -3,6 +3,7 @@
 
 import { Box } from '@mui/material'
 import mobileBg from '../../resources/images/png/mobile_bg_onboard.png'
+import LoginForm from './LoginForm'
 
 const Login = () => {
 	// const [tasks, setTasks] = useState<Tasks[] | null>(null)
@@ -42,8 +43,10 @@ const Login = () => {
 					backgroundSize: '100% calc(100% - 20px)',
 					backgroundPosition: 'top',
 					backgroundRepeat: 'no-repeat',
+					zIndex: 0,
 				}}
 			></Box>
+			<LoginForm />
 		</Box>
 	)
 }

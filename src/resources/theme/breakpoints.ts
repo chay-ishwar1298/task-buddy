@@ -15,6 +15,7 @@ declare module '@mui/material/styles' {
 }
 const breakpoints: BreakpointsOptions = {
 	values: {
+		
 		xs: 320,
 		sm: 481,
 		md: 601,

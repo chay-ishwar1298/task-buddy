@@ -4,8 +4,8 @@ import { flexStyles } from '../utils/commonStyles'
 import CustomCard from './CustomCard'
 import CustomSingleSelect from '../custom_components/CustomSingleSelect'
 import { useEffect, useState } from 'react'
-import CustomIcon from '../custom_components/CustomIcon'
-import { iconKeys, typographyKeys } from '../utils/resourceConstants'
+
+import { typographyKeys } from '../utils/resourceConstants'
 import { fetchStats } from '../current_user/currentUserSlice'
 
 export interface Option {
@@ -113,7 +113,6 @@ const Home = () => {
 
 			<Box sx={{ width: '100%', ...flexStyles.flexRowSpaceBetweenAlignCenter, gap: '10px' }}>
 				<Box sx={{ ...flexStyles.flexRowJustifyStart, gap: '8px' }}>
-					<CustomIcon name={iconKeys.quickStatsIcon} svgStyle={'height:24px;width:24px'} />
 					<Typography variant={typographyKeys.h3} sx={{ mb: '5px' }}>
 						Stats
 					</Typography>

@@ -1,8 +1,8 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import CustomIcon from '../custom_components/CustomIcon'
-import { iconKeys } from '../utils/resourceConstants'
-import { useAppDispatch } from '../custom_components/CustomHooks'
-import { logoutApi } from '../current_user/currentUserSlice'
+import CustomIcon from '../../custom_components/CustomIcon'
+import { iconKeys } from '../../utils/resourceConstants'
+import { useAppDispatch } from '../../custom_components/CustomHooks'
+import { logoutApi } from '../../current_user/currentUserSlice'
 import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
@@ -24,13 +24,7 @@ const Navbar = () => {
 			>
 				<Toolbar>
 					<Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-						<Box component='div'>
-							<CustomIcon
-								name={iconKeys.getFitNowIcon}
-								style={{ width: '215px', height: '55px' }}
-								svgStyle={'width:215px;height:55px'}
-							/>
-						</Box>
+						<Box component='div'></Box>
 
 						<IconButton
 							size='small'

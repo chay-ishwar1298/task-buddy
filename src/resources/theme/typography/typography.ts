@@ -13,6 +13,8 @@ const ptSansBold = '"PTSansBold", "sans-serif"'
 const pragatiNarrowBold = '"PragatiNarrowBold"'
 const nulshokBold = '"NulshokBold"'
 
+const urbanist = '"Urbanist", "sans-serif"'
+
 //declare custom variants here before using
 declare module '@mui/material/styles' {
 	interface TypographyVariants {
@@ -74,24 +76,6 @@ export const deskTopTypography: ThemeOptions = {
 		h2: {
 			fontFamily: ptSansBold,
 			fontSize: '25px',
-			fontStyle: 'normal',
-			fontWeight: 700,
-			wordBreak: 'break-word',
-		},
-
-		//Headline/Medium L (in figma)
-		h3: {
-			fontFamily: ptSansBold,
-			fontSize: '20px',
-			fontStyle: 'normal',
-			fontWeight: 700,
-			wordBreak: 'break-word',
-		},
-
-		//Headline/Medium  (in figma)
-		h4: {
-			fontFamily: ptSansReg,
-			fontSize: '17px',
 			fontStyle: 'normal',
 			fontWeight: 700,
 			wordBreak: 'break-word',
@@ -203,15 +187,6 @@ export const deskTopTypography: ThemeOptions = {
 			wordBreak: 'break-word',
 		},
 
-		//Callout/Regular/Medium in figma
-		callout: {
-			fontFamily: ptSansBold,
-			fontSize: '12px',
-			fontStyle: 'normal',
-			fontWeight: 400,
-			wordBreak: 'break-word',
-		},
-
 		//Callout/Bold/Medium in figma
 		callout1: {
 			fontFamily: ptSansBold,
@@ -234,6 +209,34 @@ export const deskTopTypography: ThemeOptions = {
 		callout3: {
 			fontFamily: ptSansBold,
 			fontSize: '10px',
+			fontStyle: 'normal',
+			fontWeight: 700,
+			wordBreak: 'break-word',
+		},
+
+		//new fonts
+		callout: {
+			fontFamily: urbanist,
+			fontOpticalSizing: 'auto',
+			fontSize: '12px',
+			fontStyle: 'normal',
+			fontWeight: 500,
+			wordBreak: 'break-word',
+		},
+
+		h4: {
+			fontFamily: urbanist,
+			fontOpticalSizing: 'auto',
+			fontSize: '16px',
+			fontStyle: 'normal',
+			fontWeight: 700,
+			wordBreak: 'break-word',
+		},
+
+		h3: {
+			fontFamily: urbanist,
+			fontOpticalSizing: 'auto',
+			fontSize: '21px',
 			fontStyle: 'normal',
 			fontWeight: 700,
 			wordBreak: 'break-word',

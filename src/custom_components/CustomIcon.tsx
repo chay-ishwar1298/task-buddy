@@ -37,8 +37,8 @@ const CustomIcon = ({ ...props }: CustomIconProps): ReactElement => {
 
 				// Dynamically import the icon module based on the type (SVG or PNG)
 				const module = props.typePng
-					? await import(`../resources/default/images/png/${iconName}.png`)
-					: await import(`../resources/default/images/svg/${iconName}.svg`)
+					? await import(`../resources/images/png/${iconName}.png`)
+					: await import(`../resources/images/svg/${iconName}.svg`)
 
 				if (module?.default) {
 					setIconModule(module.default) // Assuming your module has a default export

@@ -25,17 +25,16 @@ export const iconKeys = {
 	arrowLeftCircle: 'arrowLeftCircle',
 	star: 'star',
 
-	unCheckedSquare: 'unCheckedSquare',
 	accept: 'accept',
 	acceptTick: 'acceptTick',
 
 	visibilityOff: 'visibilityOff',
 	visibilityOn: 'visibilityOn',
-	getFitNowIcon: 'getFitNowIcon',
 	logout: 'logout',
 	caretDown: 'caretDown',
-	quickStatsIcon: 'quickStatsIcon',
 	success: 'success',
 	failure: 'failure',
 	closeCircle: 'closeCircle',
+	googleIcon: 'googleIcon',
+	logoTitle: 'logoTitle',
 }
