@@ -1,0 +1,23 @@
+@font-face {
+	font-family: 'PTSansReg';
+	src: url('./PT_sans/PTSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'PTSansBold';
+	src: url('./PT_sans/PTSans-Bold.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'PragatiNarrowReg';
+	src: url('./Pragati_narrow/PragatiNarrow-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'PragatiNarrowBold';
+	src: url('./Pragati_narrow/PragatiNarrow-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'NulshokBold';
+	src: url('./Nuishok/nulshock bd.otf') format('opentype');
+}
