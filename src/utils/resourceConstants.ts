@@ -37,4 +37,7 @@ export const iconKeys = {
 	closeCircle: 'closeCircle',
 	googleIcon: 'googleIcon',
 	logoTitle: 'logoTitle',
+	plus: 'plus',
+	calenderIcon: 'calenderIcon',
+	addIcon: 'addIcon',
 }

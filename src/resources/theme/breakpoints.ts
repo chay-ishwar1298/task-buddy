@@ -1,6 +1,16 @@
 import { BreakpointsOptions } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
+	interface BreakpointOverrides {
+		xs: true // removes the `xs` breakpoint
+		sm: true
+		md: true
+		ml: true
+		lg: true
+		xl: true
+		xxl: true
+	}
+
 	interface BreakpointsOptions {
 		values: {
 			xs: number
@@ -13,9 +23,9 @@ declare module '@mui/material/styles' {
 		}
 	}
 }
+
 const breakpoints: BreakpointsOptions = {
 	values: {
-		
 		xs: 320,
 		sm: 481,
 		md: 601,

@@ -2,7 +2,6 @@ import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/t
 import currentUserSlice from '../current_user/currentUserSlice'
 import { AnyData } from './utils'
 import { envConfig } from '../config'
-import { initializeInterceptors } from './customAxios'
 
 const appReducer = combineReducers({
 	currentUser: currentUserSlice,
@@ -19,9 +18,6 @@ export const store = configureStore({
 	reducer: rootReducer,
 	devTools: envConfig.app.environment !== 'production',
 })
-
-// Initialize interceptors after creating the store
-initializeInterceptors(store)
 
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>

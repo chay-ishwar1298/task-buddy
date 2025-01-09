@@ -2,10 +2,10 @@
 // import { db } from '../config/firebase'
 
 import { Box } from '@mui/material'
-import mobileBg from '../../resources/images/png/mobile_bg_onboard.png'
+import mobileBg from '../../resources/images/svg/mobile_bg_onboard.svg'
 import LoginForm from './LoginForm'
 
-const Login = () => {
+const LoginMobile = () => {
 	// const [tasks, setTasks] = useState<Tasks[] | null>(null)
 	// const tasksCollectionRef = collection(db, 'tasks')
 
@@ -51,4 +51,4 @@ const Login = () => {
 	)
 }
 
-export default Login
+export default LoginMobile

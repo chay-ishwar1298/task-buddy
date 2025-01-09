@@ -14,6 +14,7 @@ const pragatiNarrowBold = '"PragatiNarrowBold"'
 const nulshokBold = '"NulshokBold"'
 
 const urbanist = '"Urbanist", "sans-serif"'
+const mulish = '"Mulish", "sans-serif"'
 
 //declare custom variants here before using
 declare module '@mui/material/styles' {
@@ -81,16 +82,6 @@ export const deskTopTypography: ThemeOptions = {
 			wordBreak: 'break-word',
 		},
 
-		//Headline/small (in figma)
-
-		h5: {
-			fontFamily: ptSansBold,
-			fontSize: '14px',
-			fontStyle: 'normal',
-			fontWeight: 700,
-			wordBreak: 'break-word',
-		},
-
 		//button/small (in figma)
 		h6: {
 			fontFamily: pragatiNarrowBold,
@@ -119,16 +110,6 @@ export const deskTopTypography: ThemeOptions = {
 			wordBreak: 'break-word',
 		},
 
-		//Label/Regular/Large (in figma)
-
-		subtitle1: {
-			fontFamily: ptSansReg,
-			fontSize: '14px',
-			fontStyle: 'normal',
-			fontWeight: 400,
-			wordBreak: 'break-word',
-		},
-
 		//Label/Regular/Medium (in figma)
 
 		subtitle2: {
@@ -136,16 +117,6 @@ export const deskTopTypography: ThemeOptions = {
 			fontSize: '12px',
 			fontStyle: 'normal',
 			fontWeight: 400,
-			wordBreak: 'break-word',
-		},
-
-		//Label/Bold/Medum (in figma)
-
-		label1: {
-			fontFamily: pragatiNarrowBold,
-			fontSize: '12px',
-			fontStyle: 'normal',
-			fontWeight: 700,
 			wordBreak: 'break-word',
 		},
 
@@ -163,25 +134,6 @@ export const deskTopTypography: ThemeOptions = {
 		label3: {
 			fontFamily: ptSansReg,
 			fontSize: '10px',
-			fontStyle: 'normal',
-			fontWeight: 700,
-			wordBreak: 'break-word',
-		},
-
-		//Callout/Regular/Large in figma
-		body1: {
-			fontFamily: ptSansReg,
-			fontSize: '14px',
-			fontStyle: 'normal',
-			fontWeight: 400,
-			wordBreak: 'break-word',
-		},
-
-		//Callout/Bold/Large in figma
-
-		body2: {
-			fontFamily: ptSansReg,
-			fontSize: '14px',
 			fontStyle: 'normal',
 			fontWeight: 700,
 			wordBreak: 'break-word',
@@ -231,6 +183,7 @@ export const deskTopTypography: ThemeOptions = {
 			fontStyle: 'normal',
 			fontWeight: 700,
 			wordBreak: 'break-word',
+			color: '#000',
 		},
 
 		h3: {
@@ -239,6 +192,59 @@ export const deskTopTypography: ThemeOptions = {
 			fontSize: '21px',
 			fontStyle: 'normal',
 			fontWeight: 700,
+			wordBreak: 'break-word',
+			color: '#000',
+		},
+
+		label1: {
+			fontFamily: mulish,
+			fontOpticalSizing: 'auto',
+			color: '#000',
+			fontSize: '12px',
+			fontStyle: 'normal',
+			fontWeight: 500,
+			wordBreak: 'break-word',
+		},
+
+		//Label/Regular/Large (in figma)
+
+		subtitle1: {
+			fontFamily: mulish,
+			fontOpticalSizing: 'auto',
+			color: '#000',
+			fontSize: '16px',
+			fontStyle: 'normal',
+			fontWeight: 700,
+			wordBreak: 'break-word',
+		},
+
+		h5: {
+			fontFamily: mulish,
+			fontOpticalSizing: 'auto',
+			color: '#000',
+			fontSize: '15px',
+			fontStyle: 'normal',
+			fontWeight: 500,
+			wordBreak: 'break-word',
+		},
+
+		body2: {
+			fontFamily: mulish,
+			fontOpticalSizing: 'auto',
+			color: '#000',
+			fontSize: '14px',
+			fontStyle: 'normal',
+			fontWeight: 700,
+			wordBreak: 'break-word',
+		},
+
+		body1: {
+			fontFamily: mulish,
+			fontOpticalSizing: 'auto',
+			color: '#000',
+			fontSize: '14px',
+			fontStyle: 'normal',
+			fontWeight: 400,
 			wordBreak: 'break-word',
 		},
 	},

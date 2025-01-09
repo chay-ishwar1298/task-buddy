@@ -8,13 +8,13 @@ import { useAppSelector } from './custom_components/CustomHooks'
 import Toast from './custom_components/Toast'
 
 function App() {
-	const { title, subTitle, isSuccess, showToast, isLoading, hideLoader } = useAppSelector((store) => store.currentUser)
+	const { title, subTitle, isSuccess, showToast, isLoading } = useAppSelector((store) => store.currentUser)
 	return (
 		<Suspense fallback={<Loader />}>
 			<MuiThemeProvider>
 				<CssBaseline />
 				{showToast && <Toast title={title} subTitle={subTitle} isSuccess={isSuccess} />}
-				{isLoading && !hideLoader && <Loader />}
+				{isLoading && <Loader />}
 				<Routing />
 			</MuiThemeProvider>
 		</Suspense>

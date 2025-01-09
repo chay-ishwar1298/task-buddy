@@ -1,8 +1,10 @@
-import { Box } from '@mui/material'
+import { Box, useMediaQuery, useTheme } from '@mui/material'
 import Navbar from './Navbar'
 import { Outlet } from 'react-router-dom'
 
 const Dashboard = () => {
+	const theme = useTheme()
+	const downSm = useMediaQuery(theme.breakpoints.down('sm'))
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 			<Box
@@ -20,7 +22,8 @@ const Dashboard = () => {
 			<Box
 				sx={{
 					flexGrow: 1,
-					mt: '70px',
+					mt: downSm ? '50px' : '65px',
+					p: '20px 34px 20px 34px',
 				}}
 			>
 				<Outlet />

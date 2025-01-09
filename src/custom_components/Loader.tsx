@@ -1,7 +1,5 @@
-import { Backdrop, Box } from '@mui/material'
+import { Backdrop, Box, CircularProgress } from '@mui/material'
 import { ReactElement } from 'react'
-import CustomIcon from './CustomIcon'
-import { iconKeys } from '../utils/resourceConstants'
 
 /**
  * This Component is for Loading indication.
@@ -17,7 +15,7 @@ const Loader = (): ReactElement => {
 				}}
 				open={true}
 			>
-				<CustomIcon name={iconKeys.accept} style={{ height: '200px', width: '200px' }} />
+				<CircularProgress color='secondary' />
 			</Backdrop>
 		</Box>
 	)

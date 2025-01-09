@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
-import Login from './pages/login/LoginPage'
 import NotFound from './custom_components/NotFound'
-import Home from './pages/Home'
+import Home from './pages/dashboard/Home'
 import { getUserFromLocalStorage } from './utils/localStorage'
+import Login from './pages/login/Login'
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 	const user = getUserFromLocalStorage()

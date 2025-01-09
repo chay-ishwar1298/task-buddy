@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
-import { flexStyles } from '../utils/commonStyles'
-import { typographyKeys } from '../utils/resourceConstants'
+import { flexStyles } from '../../utils/commonStyles'
+import { typographyKeys } from '../../utils/resourceConstants'
 
 const CustomCard = ({
 	title,
