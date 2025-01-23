@@ -178,6 +178,7 @@ export const TaskView = ({ task, handleTaskChange, handleCancel, handleAddTaskTo
 							{statusList.map((item) => {
 								return (
 									<MenuItem
+										key={item.id}
 										onClick={() => {
 											handleTaskChange(task.id, 'status', item.id)
 											handleClose('status')
@@ -205,6 +206,7 @@ export const TaskView = ({ task, handleTaskChange, handleCancel, handleAddTaskTo
 							{categoryList.map((item) => {
 								return (
 									<MenuItem
+										key={item.id}
 										onClick={() => {
 											handleTaskChange(task.id, 'category', item.id)
 											handleClose('category')

@@ -6,7 +6,7 @@ import { iconKeys, typographyKeys } from '../../utils/resourceConstants'
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import CustomMenu from '../../custom_components/CustomMenu'
 import { localeKeys } from '../../utils/localeConstants'
-import { deleteDoc, doc } from 'firebase/firestore'
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { useAppDispatch } from '../../custom_components/CustomHooks'
 import { db } from '../../config/firebase'
 import { logger } from '../../logger'
@@ -125,6 +125,7 @@ const TaskUI = ({ task, checkedList, removeFromChecklist, addToChecklist, getTas
 }
 
 const AddedTasks = ({ tasks, getTaskList }: AddedTaskProps) => {
+	const dispatch = useAppDispatch()
 	const [checkedList, setCheckedList] = useState<string[]>([])
 	const [editMode, setEditMode] = useState<string[]>([])
 	const [taskList, setTaskList] = useState<Task[]>([])
@@ -147,15 +148,16 @@ const AddedTasks = ({ tasks, getTaskList }: AddedTaskProps) => {
 	}
 
 	const handleEditTask = async (task: Task) => {
-		// dispatch(updateIsLoading(true))
-		// try {
-		// 	await addDoc(tasksCollectionRef, { status: task.status, name: task.name, dueDate: task.dueDate, category: task.category })
-		// 	getTaskList()
-		// 	setTaskList((prev) => prev.filter((t) => t.id !== task.id))
-		// } catch (err) {
-		// 	dispatch(updateIsLoading(false))
-		// 	logger.log(err)
-		// }
+		dispatch(updateIsLoading(true))
+		try {
+			const taskDoc = doc(db, 'tasks', task.id)
+			await updateDoc(taskDoc, { status: task.status, name: task.name, dueDate: task.dueDate, category: task.category })
+			setEditMode((prev) => prev.filter((item) => item !== task.id))
+			getTaskList()
+		} catch (err) {
+			dispatch(updateIsLoading(false))
+			logger.log(err)
+		}
 
 		console.log(task)
 	}
