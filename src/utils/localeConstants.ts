@@ -12,6 +12,7 @@ export const localeKeys = {
 	addTask: 'ADD TASK',
 	addDate: 'Add Date',
 	cancel: 'Cancel',
-	add : 'Add'
-
+	add: 'Add',
+	delete: 'Delete',
+	edit: 'Edit',
 }

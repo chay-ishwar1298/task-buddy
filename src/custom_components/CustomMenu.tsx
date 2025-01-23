@@ -29,7 +29,7 @@ const CustomMenu = ({ open, anchorEl, handleClose, menuId, buttonId, children }:
 					border: '1px solid rgba(123, 25, 132, 0.15)',
 					backgroundColor: '#FFF9F9',
 					borderRadius: '12px',
-					boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+					boxShadow: '0px 4px 12px rgba(123, 25, 132, 0.15)',
 					p: '10px',
 					...flexStyles.flexColumn,
 					gap: '5px',

@@ -8,8 +8,13 @@ import CustomizedButton from '../../custom_components/CustomButton'
 import { isToday } from 'date-fns'
 import CustomDatePicker from '../../custom_components/CustomDatePicker'
 import CustomMenu from '../../custom_components/CustomMenu'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../../config/firebase'
+import { useDispatch } from 'react-redux'
+import { updateIsLoading } from '../../current_user/currentUserSlice'
+import { logger } from '../../logger'
 
-export interface AddedTask {
+export interface Task {
 	status: string
 	name: string
 	dueDate: Date | null
@@ -30,23 +35,19 @@ export const categoryList = [
 	{ id: 'health', displayName: 'HEALTH' },
 ]
 
-const CustomButonWithMenu = ({
-	open,
-	keyString,
-	handleClick,
-	handleClose,
-	anchorEl,
-	children,
-}: {
+export interface CustomButonWithMenuProps {
 	open: boolean
 	keyString: string
 	handleClick: (event: MouseEvent<HTMLButtonElement>, keySyring: string) => void
 	handleClose: (keySyring: string) => void
 	anchorEl: null | HTMLElement
+	selected: string
 	children: ReactElement
-}) => {
+}
+
+const CustomButonWithMenu = ({ open, keyString, handleClick, handleClose, anchorEl, selected, children }: CustomButonWithMenuProps) => {
 	return (
-		<>
+		<Box sx={{ ...flexStyles.flexcenterJustifyFlexStart, gap: '10px' }}>
 			<IconButton
 				sx={{ height: '30px', width: '30px', border: '1px solid rgba(0, 0, 0, 0.2)' }}
 				id='basic-button'
@@ -61,19 +62,19 @@ const CustomButonWithMenu = ({
 			<CustomMenu open={open} anchorEl={anchorEl} handleClose={() => handleClose('status')}>
 				{children}
 			</CustomMenu>
-		</>
+			<Typography variant={typographyKeys.body1}> {selected} </Typography>
+		</Box>
 	)
 }
 
-const TaskView = ({
-	task,
-	handleTaskChange,
-	handleCancel,
-}: {
-	task: AddedTask
-	handleTaskChange: (id: string, keyString: keyof AddedTask, value: AddedTask[keyof AddedTask]) => void
+export interface TaskViewProps {
+	task: Task
+	handleTaskChange: (id: string, keyString: keyof Task, value: Task[keyof Task]) => void
 	handleCancel: (id: string) => void
-}) => {
+	handleAddTaskToDB: (task: Task) => Promise<void>
+}
+
+export const TaskView = ({ task, handleTaskChange, handleCancel, handleAddTaskToDB }: TaskViewProps) => {
 	const theme = useTheme()
 	const [calendarOpen, setCalendarOpen] = useState<boolean>(false)
 	const [anchorEls, setAnchorEls] = useState<Record<string, null | HTMLElement>>({ status: null, category: null })
@@ -82,17 +83,18 @@ const TaskView = ({
 	const handleClick = (event: MouseEvent<HTMLButtonElement>, keySyring: string) => {
 		setAnchorEls((prev) => ({ ...prev, [keySyring]: event.currentTarget }))
 	}
+
 	const handleClose = (keySyring: string) => {
 		setAnchorEls((prev) => ({ ...prev, [keySyring]: null }))
 	}
 
 	return (
-		<Box sx={{ ...flexStyles.flexColumn, gap: '15px', padding: '10px 20px', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
+		<Box key={task.id} sx={{ ...flexStyles.flexColumn, gap: '15px', padding: '12px 10px', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
 			<Box
 				sx={{
 					...flexStyles.flexRowSpaceBetweenAlignCenter,
-
 					gap: '10px',
+					pl: '90px',
 				}}
 			>
 				<TextField
@@ -170,6 +172,7 @@ const TaskView = ({
 						handleClick={handleClick}
 						handleClose={handleClose}
 						anchorEl={anchorEls.status}
+						selected={task.status}
 					>
 						<>
 							{statusList.map((item) => {
@@ -196,6 +199,7 @@ const TaskView = ({
 						handleClick={handleClick}
 						handleClose={handleClose}
 						anchorEl={anchorEls.category}
+						selected={task.category}
 					>
 						<>
 							{categoryList.map((item) => {
@@ -207,16 +211,18 @@ const TaskView = ({
 										}}
 										selected={item.id === task.category}
 									>
-										{item.displayName}
+										<Typography variant={typographyKeys.label1}>{item.displayName}</Typography>
 									</MenuItem>
 								)
 							})}
 						</>
 					</CustomButonWithMenu>
 				</Box>
+
+				<Box sx={{ height: '26px', width: '26px' }}></Box>
 			</Box>
 
-			<Box sx={{ ...flexStyles.flexRowAlignStart, gap: '10px' }}>
+			<Box sx={{ ...flexStyles.flexRowAlignStart, gap: '10px', pl: '80px' }}>
 				<CustomizedButton
 					textprops={{
 						text: localeKeys.add.toUpperCase(),
@@ -230,6 +236,7 @@ const TaskView = ({
 						backgroundColor: '#7B1984',
 					}}
 					disabled={!task?.name?.trim()}
+					onClick={() => handleAddTaskToDB(task)}
 				/>
 
 				<CustomizedButton
@@ -251,10 +258,29 @@ const TaskView = ({
 	)
 }
 
-const AddTask = () => {
-	const [taskList, setTaskList] = useState<AddedTask[]>([])
+interface AddTaskProps {
+	getTaskList: () => Promise<void>
+}
 
-	const handleTaskChange = (id: string, keyString: keyof AddedTask, value: AddedTask[keyof AddedTask]) => {
+const AddTask = ({ getTaskList }: AddTaskProps) => {
+	const [taskList, setTaskList] = useState<Task[]>([])
+	const dispatch = useDispatch()
+
+	const tasksCollectionRef = collection(db, 'tasks')
+
+	const handleAddTaskToDB = async (task: Task) => {
+		dispatch(updateIsLoading(true))
+		try {
+			await addDoc(tasksCollectionRef, { status: task.status, name: task.name, dueDate: task.dueDate, category: task.category })
+			getTaskList()
+			setTaskList((prev) => prev.filter((t) => t.id !== task.id))
+		} catch (err) {
+			dispatch(updateIsLoading(false))
+			logger.log(err)
+		}
+	}
+
+	const handleTaskChange = (id: string, keyString: keyof Task, value: Task[keyof Task]) => {
 		const newData = taskList.map((item) => {
 			if (item.id === id) {
 				return { ...item, [keyString]: value }
@@ -268,7 +294,7 @@ const AddTask = () => {
 		setTaskList((prev) => [
 			...prev,
 			{
-				status: '',
+				status: 'TO-DO',
 				name: '',
 				dueDate: null,
 				category: '',
@@ -304,7 +330,15 @@ const AddTask = () => {
 			</Box>
 
 			{taskList.map((task) => {
-				return <TaskView key={task.id} task={task} handleTaskChange={handleTaskChange} handleCancel={handleCancelAdd} />
+				return (
+					<TaskView
+						key={task.id}
+						task={task}
+						handleTaskChange={handleTaskChange}
+						handleCancel={handleCancelAdd}
+						handleAddTaskToDB={handleAddTaskToDB}
+					/>
+				)
 			})}
 		</Box>
 	)

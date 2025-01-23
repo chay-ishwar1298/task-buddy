@@ -3,6 +3,7 @@ import { Box, Collapse, IconButton, IconButtonProps, styled, Typography } from '
 import CustomIcon from './CustomIcon'
 import { flexStyles } from '../utils/commonStyles'
 import { iconKeys, typographyKeys } from '../utils/resourceConstants'
+import { logger } from '../logger'
 
 interface CustomCollapseProps {
 	title: string
@@ -44,7 +45,7 @@ interface ExpandMoreProps extends IconButtonProps {
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
 	const { expand, ...other } = props
-	console.log(expand)
+	logger.log(expand)
 	return <IconButton size='small' {...other} />
 })(({ theme }) => ({
 	marginLeft: 'auto',
@@ -76,15 +77,29 @@ const CustomCollapse = ({ ...props }: CustomCollapseProps) => {
 	}
 
 	return (
-		<Box sx={{ ...styles.container }}>
-			<Box sx={{ ...styles.header1, borderRadius: open ? '10px 10px 0px 0px' : '10px', backgroundColor: props.color ?? '#FAC3FF' }}>
+		<Box
+			sx={{
+				...styles.container,
+			}}
+		>
+			<Box
+				sx={{
+					...styles.header1,
+					borderRadius: open ? '10px 10px 0px 0px' : '10px',
+					backgroundColor: props.color ?? '#FAC3FF',
+					'&:hover': {
+						boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.10)',
+					},
+				}}
+				onClick={handleToggle}
+			>
 				<Box sx={{ ...flexStyles.flexRowSpaceBetweenAlignCenter, width: '100%', gap: '4px' }}>
 					<Typography variant={typographyKeys.subtitle1} sx={{ fontWeight: 500 }}>
 						{' '}
 						{title}{' '}
 					</Typography>
 
-					<ExpandMore expand={open} onClick={handleToggle} aria-expanded={open} aria-label='show more'>
+					<ExpandMore expand={open} aria-expanded={open} aria-label='show more'>
 						<CustomIcon name={iconKeys.caretDown} style={{ height: '15px', width: '15px' }} svgStyle='height: 15px; width:15px' />
 					</ExpandMore>
 				</Box>
