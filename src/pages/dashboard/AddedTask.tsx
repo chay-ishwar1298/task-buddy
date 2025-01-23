@@ -8,7 +8,7 @@ import CustomMenu from '../../custom_components/CustomMenu'
 import { localeKeys } from '../../utils/localeConstants'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { useAppDispatch } from '../../custom_components/CustomHooks'
-import { db } from '../../config/firebase'
+import { auth, db } from '../../config/firebase'
 import { logger } from '../../logger'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
 
@@ -151,7 +151,13 @@ const AddedTasks = ({ tasks, getTaskList }: AddedTaskProps) => {
 		dispatch(updateIsLoading(true))
 		try {
 			const taskDoc = doc(db, 'tasks', task.id)
-			await updateDoc(taskDoc, { status: task.status, name: task.name, dueDate: task.dueDate, category: task.category })
+			await updateDoc(taskDoc, {
+				status: task.status,
+				name: task.name,
+				dueDate: task.dueDate,
+				category: task.category,
+				userId: auth?.currentUser?.uid,
+			})
 			setEditMode((prev) => prev.filter((item) => item !== task.id))
 			getTaskList()
 		} catch (err) {

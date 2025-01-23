@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 const Dashboard = () => {
 	const theme = useTheme()
 	const downSm = useMediaQuery(theme.breakpoints.down('sm'))
+	
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 			<Box

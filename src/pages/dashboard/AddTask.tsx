@@ -9,7 +9,7 @@ import { isToday } from 'date-fns'
 import CustomDatePicker from '../../custom_components/CustomDatePicker'
 import CustomMenu from '../../custom_components/CustomMenu'
 import { addDoc, collection } from 'firebase/firestore'
-import { db } from '../../config/firebase'
+import { auth, db } from '../../config/firebase'
 import { useDispatch } from 'react-redux'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
 import { logger } from '../../logger'
@@ -273,7 +273,13 @@ const AddTask = ({ getTaskList }: AddTaskProps) => {
 	const handleAddTaskToDB = async (task: Task) => {
 		dispatch(updateIsLoading(true))
 		try {
-			await addDoc(tasksCollectionRef, { status: task.status, name: task.name, dueDate: task.dueDate, category: task.category })
+			await addDoc(tasksCollectionRef, {
+				status: task.status,
+				name: task.name,
+				dueDate: task.dueDate,
+				category: task.category,
+				userId: auth?.currentUser?.uid,
+			})
 			getTaskList()
 			setTaskList((prev) => prev.filter((t) => t.id !== task.id))
 		} catch (err) {
