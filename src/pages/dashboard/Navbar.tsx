@@ -20,7 +20,6 @@ const Navbar = () => {
 	const theme = useTheme()
 	const upSm = useMediaQuery(theme.breakpoints.up('sm'))
 
-	console.log(user?.currentUser?.email)
 	const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget)
 	}

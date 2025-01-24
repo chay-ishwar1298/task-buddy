@@ -40,4 +40,12 @@ export const iconKeys = {
 	plus: 'plus',
 	calenderIcon: 'calenderIcon',
 	addIcon: 'addIcon',
+	check: 'check',
+	uncheck: 'uncheck',
+	dragIcon: 'dragIcon',
+	successGreen: 'successGreen',
+	successGrey: 'successGrey',
+	editIcon: 'editIcon',
+	deleteIcon: 'deleteIcon',
+	moreIcon: 'moreIcon',
 }

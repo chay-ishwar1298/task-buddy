@@ -9,8 +9,6 @@ const LoginMobile = () => {
 	// const [tasks, setTasks] = useState<Tasks[] | null>(null)
 	// const tasksCollectionRef = collection(db, 'tasks')
 
-	// console.log()
-
 	// const getTestData = async () => {
 	// 	try {
 	// 		const data = await getDocs(tasksCollectionRef)
