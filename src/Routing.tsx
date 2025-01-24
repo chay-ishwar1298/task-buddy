@@ -4,15 +4,16 @@ import NotFound from './custom_components/NotFound'
 import Home from './pages/dashboard/Home'
 import { getUserFromLocalStorage } from './utils/localStorage'
 import Login from './pages/login/Login'
+import { ReactElement } from 'react'
 
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+const ProtectedRoute = ({ children }: { children: ReactElement }) => {
 	const user = getUserFromLocalStorage()
 
 	// Redirect to login if user is not authenticated
 	return user ? children : <Navigate to='/login' replace />
 }
 
-const AuthRoute = ({ children }: { children: JSX.Element }) => {
+const AuthRoute = ({ children }: { children: ReactElement }) => {
 	const user = getUserFromLocalStorage()
 
 	// Redirect to dashboard if already logged in
