@@ -43,7 +43,7 @@ const CustomIcon = ({ ...props }: CustomIconProps): ReactElement => {
 				if (module?.default) {
 					setIconModule(module.default) // Assuming your module has a default export
 				} else {
-					const newMod = await import(`../resources/default/images/svg/${props.name}.svg`)
+					const newMod = await import(`../resources/images/svg/${props.name}.svg`)
 					setIconModule(newMod.default)
 				}
 			} catch (error) {
