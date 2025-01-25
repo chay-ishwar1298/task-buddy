@@ -36,7 +36,9 @@ const SelectedTasksHandleUI = ({ open, count, handleUpdateTaskStatus }: Selected
 			anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 			// autoHideDuration={6000}
 			// onClose={(event, reason) => handleClose(reason)}
-			// sx={{ zIndex: 99999 }}
+			ContentProps={{
+				style: { zIndex: 9997 },
+			}}
 		>
 			<Card
 				sx={{
@@ -74,7 +76,6 @@ const SelectedTasksHandleUI = ({ open, count, handleUpdateTaskStatus }: Selected
 							border: '1px solid',
 							borderColor: '#fff',
 							backgroundColor: 'rgba(141, 138, 138, 0.14)',
-                           
 						}}
 						id='basic-button'
 						aria-controls={openAnc ? 'basic-menu' : undefined}

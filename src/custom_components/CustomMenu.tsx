@@ -1,4 +1,4 @@
-import { Menu, useTheme } from '@mui/material'
+import { Menu } from '@mui/material'
 import { flexStyles } from '../utils/commonStyles'
 import { EmptyFunction } from '../utils/types'
 import { ReactElement } from 'react'
@@ -14,7 +14,6 @@ interface CustomMenuProps {
 }
 
 const CustomMenu = ({ open, anchorEl, handleClose, menuId, buttonId, children }: CustomMenuProps) => {
-	const theme = useTheme()
 	return (
 		<Menu
 			id={menuId ?? 'basic-menu'}
@@ -25,6 +24,7 @@ const CustomMenu = ({ open, anchorEl, handleClose, menuId, buttonId, children }:
 				'aria-labelledby': buttonId ?? 'basic-button',
 			}}
 			sx={{
+				zIndex: 9999,
 				'.MuiPaper-root': {
 					mt: '5px',
 					border: '1px solid rgba(123, 25, 132, 0.15)',
@@ -34,7 +34,6 @@ const CustomMenu = ({ open, anchorEl, handleClose, menuId, buttonId, children }:
 					p: '10px',
 					...flexStyles.flexColumn,
 					gap: '5px',
-					zIndex: theme.zIndex.snackbar + 1,
 				},
 			}}
 		>
