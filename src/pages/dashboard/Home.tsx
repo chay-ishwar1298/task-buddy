@@ -7,6 +7,8 @@ import { db } from '../../config/firebase'
 import { logger } from '../../logger'
 import { useAppDispatch } from '../../custom_components/CustomHooks'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const Home = () => {
 	const [tasks, setTasks] = useState<Task[] | null>(null)
@@ -38,7 +40,11 @@ const Home = () => {
 
 	return (
 		<Box>
-			<ListView tasks={tasks} getTaskList={getTaskList} />
+			<Box>
+				<DndProvider backend={HTML5Backend}>
+					<ListView tasks={tasks} getTaskList={getTaskList} />
+				</DndProvider>
+			</Box>
 		</Box>
 	)
 }

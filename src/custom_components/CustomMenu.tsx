@@ -24,6 +24,7 @@ const CustomMenu = ({ open, anchorEl, handleClose, menuId, buttonId, children }:
 				'aria-labelledby': buttonId ?? 'basic-button',
 			}}
 			sx={{
+				zIndex: 9999,
 				'.MuiPaper-root': {
 					mt: '5px',
 					border: '1px solid rgba(123, 25, 132, 0.15)',

@@ -48,4 +48,6 @@ export const iconKeys = {
 	editIcon: 'editIcon',
 	deleteIcon: 'deleteIcon',
 	moreIcon: 'moreIcon',
+	multiSelectIcon: 'multiSelectIcon',
+	remove : 'remove'
 }
