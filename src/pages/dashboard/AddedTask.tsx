@@ -11,10 +11,17 @@ import { useAppDispatch } from '../../custom_components/CustomHooks'
 import { auth, db } from '../../config/firebase'
 import { logger } from '../../logger'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
+import { useDrag, useDrop } from 'react-dnd'
+import { ItemTypes } from '../../utils/commonConstants'
+import shadows from '@mui/material/styles/shadows'
+import { SetterFunction } from '../../utils/types'
 
 export interface AddedTaskProps {
 	tasks: Task[]
 	getTaskList: () => Promise<void>
+	status: string
+	checkedList: string[]
+	setCheckedList: SetterFunction<string[]>
 }
 
 export interface TaskUIProps {
@@ -30,6 +37,14 @@ const TaskUI = ({ task, checkedList, removeFromChecklist, addToChecklist, getTas
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
 	const dispatch = useAppDispatch()
+
+	const [{ isDragging }, drag] = useDrag(() => ({
+		type: ItemTypes.TASK,
+		item: task,
+		collect: (monitor) => ({
+			isDragging: !!monitor.isDragging(),
+		}),
+	}))
 
 	const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget)
@@ -57,7 +72,11 @@ const TaskUI = ({ task, checkedList, removeFromChecklist, addToChecklist, getTas
 	}
 
 	return (
-		<Box key={task.id} sx={{ ...flexStyles.flexRowAlignCenter, p: '0px 10px', width: '100%', gap: '10px' }}>
+		<Box
+			key={task.id}
+			ref={drag}
+			sx={{ ...flexStyles.flexRowAlignCenter, p: '12px 10px', width: '100%', gap: '10px', opacity: isDragging ? 0.9 : 1 }}
+		>
 			<Checkbox
 				size='small'
 				checked={checkedList.includes(task.id)}
@@ -124,11 +143,42 @@ const TaskUI = ({ task, checkedList, removeFromChecklist, addToChecklist, getTas
 	)
 }
 
-const AddedTasks = ({ tasks, getTaskList }: AddedTaskProps) => {
+const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }: AddedTaskProps) => {
 	const dispatch = useAppDispatch()
-	const [checkedList, setCheckedList] = useState<string[]>([])
+
 	const [editMode, setEditMode] = useState<string[]>([])
 	const [taskList, setTaskList] = useState<Task[]>([])
+
+	const handleUpdateTaskStatus = async (task: Task, statusStr: string) => {
+		dispatch(updateIsLoading(true))
+		try {
+			const taskDoc = doc(db, 'tasks', task.id)
+			await updateDoc(taskDoc, {
+				status: statusStr,
+				name: task.name,
+				dueDate: task.dueDate,
+				category: task.category,
+				userId: auth?.currentUser?.uid,
+			})
+
+			getTaskList()
+		} catch (err) {
+			dispatch(updateIsLoading(false))
+			logger.log(err)
+		}
+	}
+
+	const [{ canDrop }, drop] = useDrop(
+		() => ({
+			accept: ItemTypes.TASK,
+			drop: (task: Task) => handleUpdateTaskStatus(task, status),
+			collect: (monitor) => ({
+				isOver: !!monitor.isOver(),
+				canDrop: !!monitor.canDrop(),
+			}),
+		}),
+		[]
+	)
 
 	useEffect(() => {
 		setTaskList(tasks)
@@ -189,7 +239,7 @@ const AddedTasks = ({ tasks, getTaskList }: AddedTaskProps) => {
 	}
 
 	return (
-		<Box sx={{ ...flexStyles.flexColumn, gap: '12px', p: '12px 0px' }}>
+		<Box ref={drop} sx={{ ...flexStyles.flexColumn, boxShadow: canDrop ? shadows[1] : 0 }}>
 			{taskList.length > 0 &&
 				taskList.map((task, i) => {
 					return (
