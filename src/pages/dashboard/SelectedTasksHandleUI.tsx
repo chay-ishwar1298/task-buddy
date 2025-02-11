@@ -13,9 +13,10 @@ interface SelectedTasksHandleUIProps {
 	count: number
 	getTaskList: () => Promise<void>
 	handleUpdateTaskStatus: (str: string) => void
+	handleDeleteAll: () => void
 }
 
-const SelectedTasksHandleUI = ({ open, count, handleUpdateTaskStatus }: SelectedTasksHandleUIProps) => {
+const SelectedTasksHandleUI = ({ open, count, handleUpdateTaskStatus, handleDeleteAll }: SelectedTasksHandleUIProps) => {
 	const theme = useTheme()
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -109,7 +110,7 @@ const SelectedTasksHandleUI = ({ open, count, handleUpdateTaskStatus }: Selected
 							borderColor: '#e13838',
 							backgroundColor: 'rgba(255, 53, 53, 0.14)',
 						}}
-						// onClick={() => handleCancel(task.id)}
+						onClick={handleDeleteAll}
 					/>
 				</Box>
 			</Card>
