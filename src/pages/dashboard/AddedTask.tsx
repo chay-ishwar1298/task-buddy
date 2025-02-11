@@ -15,13 +15,15 @@ import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from '../../utils/commonConstants'
 import shadows from '@mui/material/styles/shadows'
 import { SetterFunction } from '../../utils/types'
+import { NoDataUI } from './ListView'
 
 export interface AddedTaskProps {
-	tasks: Task[]
+	tasks: Task[] | null
 	getTaskList: () => Promise<void>
 	status: string
 	checkedList: string[]
 	setCheckedList: SetterFunction<string[]>
+	title: string
 }
 
 export interface TaskUIProps {
@@ -143,11 +145,11 @@ const TaskUI = ({ task, checkedList, removeFromChecklist, addToChecklist, getTas
 	)
 }
 
-const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }: AddedTaskProps) => {
+const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList, title }: AddedTaskProps) => {
 	const dispatch = useAppDispatch()
 
 	const [editMode, setEditMode] = useState<string[]>([])
-	const [taskList, setTaskList] = useState<Task[]>([])
+	const [taskList, setTaskList] = useState<Task[] | null>([])
 
 	const handleUpdateTaskStatus = async (task: Task, statusStr: string) => {
 		dispatch(updateIsLoading(true))
@@ -181,7 +183,9 @@ const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }:
 	)
 
 	useEffect(() => {
-		setTaskList(tasks)
+		if (tasks) {
+			setTaskList(tasks?.filter((task) => task.status === status))
+		}
 	}, [tasks])
 
 	const addToChecklist = (id: string) => {
@@ -219,28 +223,30 @@ const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }:
 	}
 
 	const handleTaskChange = (id: string, keyString: keyof Task, value: Task[keyof Task]) => {
-		const newData = taskList.map((item) => {
-			if (item.id === id) {
-				return { ...item, [keyString]: value }
-			} else return item
-		})
+		const newData =
+			taskList?.map((item) => {
+				if (item.id === id) {
+					return { ...item, [keyString]: value }
+				} else return item
+			}) ?? []
 
 		setTaskList(newData)
 	}
 
 	const handleCancelAdd = (id: string) => {
 		setEditMode((prev) => prev.filter((item) => item !== id))
-		const newData = taskList.map((item) => {
-			if (item.id === id) {
-				return tasks.filter((task) => task.id === item.id)?.[0] ?? item
-			} else return item
-		})
+		const newData =
+			taskList?.map((item) => {
+				if (item.id === id) {
+					return tasks?.filter((task) => task.id === item.id)?.[0] ?? item
+				} else return item
+			}) ?? []
 		setTaskList(newData)
 	}
 
 	return (
 		<Box ref={drop} sx={{ ...flexStyles.flexColumn, boxShadow: canDrop ? shadows[1] : 0 }}>
-			{taskList.length > 0 &&
+			{taskList && taskList.length > 0 ? (
 				taskList.map((task, i) => {
 					return (
 						<React.Fragment key={task.id}>
@@ -261,7 +267,7 @@ const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }:
 										getTaskList={getTaskList}
 										handleEnableEdit={handleEnableEdit}
 									/>
-									{i !== tasks.length - 1 && (
+									{i !== taskList?.length - 1 && (
 										<Divider
 											sx={{
 												backgroundColor: '1px solid rgba(0, 0, 0, 0.1)',
@@ -275,7 +281,10 @@ const AddedTasks = ({ tasks, getTaskList, status, setCheckedList, checkedList }:
 							)}
 						</React.Fragment>
 					)
-				})}
+				})
+			) : (
+				<NoDataUI title={title} />
+			)}
 		</Box>
 	)
 }

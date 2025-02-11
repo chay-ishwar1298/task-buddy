@@ -10,10 +10,10 @@ import SelectedTasksHandleUI from './SelectedTasksHandleUI'
 import { useAppDispatch } from '../../custom_components/CustomHooks'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
 import { logger } from '../../logger'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { auth, db } from '../../config/firebase'
 
-const NoDataUI = ({ title }: { title: string }) => {
+export const NoDataUI = ({ title }: { title: string }) => {
 	return (
 		<Box sx={{ ...flexStyles.flexColumnJustifyAlignCenter, minHeight: '158px', height: '100%', width: '100%' }}>
 			<Typography variant={typographyKeys.h5} sx={{ color: '#2F2F2F' }}>
@@ -62,52 +62,65 @@ const ListView = ({ tasks, getTaskList }: ListViewProps) => {
 		}
 	}
 
+	const handleDeleteFromDb = async () => {
+		dispatch(updateIsLoading(true))
+		try {
+			// Create an array of delete operations
+			const deleteOperations = checkedList.map((id) => {
+				const taskDoc = doc(db, 'tasks', id)
+				return deleteDoc(taskDoc)
+			})
+
+			// Execute all delete operations in parallel
+			await Promise.all(deleteOperations)
+			setCheckedList([])
+			// Refresh task list after deletion
+			getTaskList()
+		} catch (err) {
+			logger.log(err)
+		} finally {
+			dispatch(updateIsLoading(false))
+		}
+	}
+
 	return (
 		<Box sx={{ ...flexStyles.flexColumn, gap: '20px' }}>
 			<CustomCollapse title={localeKeys.todo}>
 				<Box sx={{ ...flexStyles.flexColumn }}>
 					<AddTask getTaskList={getTaskList} />
-					{tasks && tasks.filter((task) => task.status === 'TO-DO').length > 0 ? (
-						<AddedTasks
-							tasks={tasks.filter((task) => task.status === 'TO-DO')}
-							getTaskList={getTaskList}
-							status={'TO-DO'}
-							checkedList={checkedList}
-							setCheckedList={setCheckedList}
-						/>
-					) : (
-						<NoDataUI title={localeKeys.todo} />
-					)}
+
+					<AddedTasks
+						tasks={tasks}
+						getTaskList={getTaskList}
+						status={'TO-DO'}
+						checkedList={checkedList}
+						setCheckedList={setCheckedList}
+						title={localeKeys.todo}
+					/>
 				</Box>
 			</CustomCollapse>
 			<CustomCollapse title={localeKeys.inProgress} color='#85D9F1'>
 				<Box sx={{ height: '100%', width: '100%' }}>
-					{tasks && tasks.filter((task) => task.status === 'IN-PROGRESS').length > 0 ? (
-						<AddedTasks
-							tasks={tasks.filter((task) => task.status === 'IN-PROGRESS')}
-							getTaskList={getTaskList}
-							status='IN-PROGRESS'
-							checkedList={checkedList}
-							setCheckedList={setCheckedList}
-						/>
-					) : (
-						<NoDataUI title={localeKeys.progress} />
-					)}
+					<AddedTasks
+						tasks={tasks}
+						getTaskList={getTaskList}
+						status='IN-PROGRESS'
+						checkedList={checkedList}
+						setCheckedList={setCheckedList}
+						title={localeKeys.progress}
+					/>
 				</Box>
 			</CustomCollapse>
 			<CustomCollapse title={localeKeys.completed} color='#CEFFCC'>
 				<Box sx={{ height: '100%', width: '100%' }}>
-					{tasks && tasks.filter((task) => task.status === 'COMPLETED').length > 0 ? (
-						<AddedTasks
-							tasks={tasks.filter((task) => task.status === 'COMPLETED')}
-							getTaskList={getTaskList}
-							status='COMPLETED'
-							checkedList={checkedList}
-							setCheckedList={setCheckedList}
-						/>
-					) : (
-						<NoDataUI title={localeKeys.completed} />
-					)}
+					<AddedTasks
+						tasks={tasks}
+						getTaskList={getTaskList}
+						status='COMPLETED'
+						checkedList={checkedList}
+						setCheckedList={setCheckedList}
+						title={localeKeys.completed}
+					/>
 				</Box>
 			</CustomCollapse>
 			{snackbarOpen && (
@@ -115,6 +128,7 @@ const ListView = ({ tasks, getTaskList }: ListViewProps) => {
 					open={snackbarOpen}
 					count={checkedList.length}
 					handleUpdateTaskStatus={handleUpdateTaskStatus}
+					handleDeleteAll={handleDeleteFromDb}
 					getTaskList={getTaskList}
 				/>
 			)}

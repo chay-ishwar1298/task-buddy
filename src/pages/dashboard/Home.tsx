@@ -2,8 +2,8 @@ import { Box } from '@mui/material'
 import ListView from './ListView'
 import { useEffect, useState } from 'react'
 import { Task } from './AddTask'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../../config/firebase'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { auth, db } from '../../config/firebase'
 import { logger } from '../../logger'
 import { useAppDispatch } from '../../custom_components/CustomHooks'
 import { updateIsLoading } from '../../current_user/currentUserSlice'
@@ -18,18 +18,26 @@ const Home = () => {
 	const getTaskList = async () => {
 		dispatch(updateIsLoading(true))
 		try {
-			const data = await getDocs(tasksCollectionRef)
-			const tasklist = data.docs.map((doc) => {
-				const data = { ...doc.data() }
-				const dateString = data?.dueDate ? data?.dueDate?.toDate() : null
+			// Reference to the 'tasks' collection
 
-				return { ...data, dueDate: new Date(dateString), id: doc.id }
+			// Query to fetch only tasks where userId matches the authenticated user
+			const q = query(tasksCollectionRef, where('userId', '==', auth?.currentUser?.uid))
+
+			// Execute the query
+			const data = await getDocs(q)
+
+			// Transform the Firestore documents into a structured task list
+			const tasklist = data.docs.map((doc) => {
+				const taskData = { ...doc.data() }
+				const dateString = taskData?.dueDate ? taskData?.dueDate.toDate() : null
+
+				return { ...taskData, dueDate: new Date(dateString), id: doc.id }
 			})
 
 			setTasks(tasklist as Task[])
-			dispatch(updateIsLoading(false))
 		} catch (e) {
 			logger.log(e)
+		} finally {
 			dispatch(updateIsLoading(false))
 		}
 	}
